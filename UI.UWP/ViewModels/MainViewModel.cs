@@ -5,7 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
@@ -48,13 +50,20 @@ public class MainViewModel : BindableBase
 
     private async Task LoadState()
     {
-        IEnumerable<Person>? models = await this._peopleFileService
-            .LoadAsync(nameof(this.People));
-        IEnumerable<PersonViewModel> viewModels = models.Select(x => new PersonViewModel(x));
-        this.People.Clear();
-        foreach (PersonViewModel person in viewModels)
+        try
         {
-            this.AddPerson(person);
+            IEnumerable<Person>? models = await this._peopleFileService
+                .LoadAsync(nameof(this.People));
+            IEnumerable<PersonViewModel> viewModels = models.Select(x => new PersonViewModel(x));
+            this.People.Clear();
+            foreach (PersonViewModel person in viewModels)
+            {
+                this.AddPerson(person);
+            }
+        }
+        catch (JsonException ex)
+        {
+            Debug.WriteLine(ex);
         }
     }
 
