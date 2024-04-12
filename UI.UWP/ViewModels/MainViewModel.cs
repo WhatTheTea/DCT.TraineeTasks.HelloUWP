@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -61,7 +62,8 @@ public class MainViewModel : BindableBase
                 this.AddPerson(person);
             }
         }
-        catch (JsonException ex)
+        catch (Exception ex)
+        when (ex is JsonException || ex is FileNotFoundException)
         {
             Debug.WriteLine(ex);
         }
