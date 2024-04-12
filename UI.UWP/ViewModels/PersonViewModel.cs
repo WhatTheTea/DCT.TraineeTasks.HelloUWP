@@ -36,7 +36,14 @@ public class PersonViewModel : BindableBase
     public ICommand DeleteEntryCommand { get; }
     public ICommand AddEntryCommand { get; }
 
-    internal Person Model => new(this._person);
+    internal Person Model
+    {
+        get
+        {
+            this._person.Entries = this.Entries.Select(x => x.Model).ToArray();
+            return new(this._person);
+        }
+    }
 
     public string FirstName
     {

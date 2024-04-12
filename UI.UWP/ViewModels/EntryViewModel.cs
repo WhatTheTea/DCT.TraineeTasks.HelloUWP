@@ -18,4 +18,6 @@ public class EntryViewModel(Entry entry) : BindableBase
         get => entry.Text;
         set => this.SetAndRaise(value, entry, x => x.Text);
     }
+
+    internal Entry Model => entry;
 }
