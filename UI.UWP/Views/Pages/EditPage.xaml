@@ -22,6 +22,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -50,33 +51,37 @@
                             Command="{x:Bind ViewModel.DeleteEntryCommand}"
                             CommandParameter="{x:Bind EntriesListView.SelectedItem, Mode=OneWay}" />
                 </StackPanel>
-                <ScrollViewer>
-                    <ListView ItemsSource="{x:Bind ViewModel.Entries, Mode=OneWay}"
-                              x:Name="EntriesListView">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding Text, Mode=TwoWay}"/>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        <d:ListView.Items>
-                            <viewmodels:EntryViewModel Text="Text 1"/>
-                            <viewmodels:EntryViewModel Text="Text 2"/>
-                            <viewmodels:EntryViewModel Text="Text 3"/>
-                            <viewmodels:EntryViewModel Text="Loooooooooooooooooooooooooooooooong text"/>
-                        </d:ListView.Items>
-                    </ListView>
-                </ScrollViewer>
             </StackPanel>
 
         </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <ListView ItemsSource="{x:Bind ViewModel.Entries, Mode=OneWay}"
+              x:Name="EntriesListView">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Text, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <d:ListView.Items>
+                    <viewmodels:EntryViewModel Text="Text 1"/>
+                    <viewmodels:EntryViewModel Text="Text 2"/>
+                    <viewmodels:EntryViewModel Text="Text 3"/>
+                    <viewmodels:EntryViewModel Text="Loooooooooooooooooooooooooooooooong text"/>
+                </d:ListView.Items>
+
+            </ListView>
+        </ScrollViewer>
+        
         <Button x:Name="DeleteButton"
                 HorizontalAlignment="Stretch"
-                Grid.Row="1"
+                Grid.Row="2"
                 Command="{x:Bind ViewModel.DeleteCommand}"
                 Click="DeleteButton_Click">
             <StackPanel Orientation="Horizontal">
