@@ -2,11 +2,10 @@
 // Copyright (c) Digital Cloud Technologies.All rights reserved.
 // </copyright>
 
-using System;
 using System.Linq;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -20,10 +19,10 @@ public sealed partial class MainPage : Page
     public MainPage()
     {
         this.InitializeComponent();
-        App.Current.Suspending += (_, _) => ViewModel.SaveStateCommand.Execute(null);
+        Application.Current.Suspending += (_, _) => this.ViewModel.SaveStateCommand.Execute(null);
     }
 
-    public static readonly MainViewModel ViewModel = new();
+    public readonly MainViewModel ViewModel = MainViewModel.GetInstance();
 
     private void PeopleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {

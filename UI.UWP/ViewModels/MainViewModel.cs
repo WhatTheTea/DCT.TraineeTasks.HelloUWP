@@ -14,17 +14,22 @@ using System.Windows.Input;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Services;
 using DCT.TraineeTasks.HelloUWP.WhatTheToolkit;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
 public class MainViewModel : BindableBase
 {
+    private static readonly MainViewModel Instance;
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
     private ObservableCollection<PersonViewModel> people = [];
 
-    public MainViewModel()
+    static MainViewModel()
+    {
+        Instance = new MainViewModel();
+    }
+
+    protected MainViewModel()
     {
         this.AddPersonCommand = new RelayCommand(() => this.AddPerson(new PersonViewModel()));
         // TODO: AsyncCommands
@@ -33,6 +38,8 @@ public class MainViewModel : BindableBase
 
         this.LoadStateCommand.Execute(null);
     }
+
+    public static MainViewModel GetInstance() => Instance;
 
     public ObservableCollection<PersonViewModel> People
     {
