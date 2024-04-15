@@ -1,8 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.UWP", "UI.UWP\UI.UWP.csproj", "{3A235717-08C3-45B1-BB31-BBB986620B16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatTheToolkit", "WhatTheToolkit\WhatTheToolkit.csproj", "{A67FA455-B158-4D54-BBD4-A168A02E4302}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{224ED43A-FCED-46D8-86CE-187FF16D219E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +26,11 @@ Global
 		{A67FA455-B158-4D54-BBD4-A168A02E4302}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A67FA455-B158-4D54-BBD4-A168A02E4302}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A67FA455-B158-4D54-BBD4-A168A02E4302}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B02527B9-233D-43EE-85DC-85EA1EE4A07B}
 	EndGlobalSection
 EndGlobal
