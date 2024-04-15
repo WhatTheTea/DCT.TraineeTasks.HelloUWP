@@ -50,8 +50,6 @@
         <StackPanel Orientation="Horizontal"
                     Grid.Row="0">
             <Button Content="Add person" Command="{x:Bind ViewModel.AddPersonCommand}" />
-            <Button Content="Save" Command="{x:Bind ViewModel.SaveStateCommand}" />
-            <Button Content="Load" Command="{x:Bind ViewModel.LoadStateCommand}" />
         </StackPanel>
         <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
                 BorderThickness="2"
