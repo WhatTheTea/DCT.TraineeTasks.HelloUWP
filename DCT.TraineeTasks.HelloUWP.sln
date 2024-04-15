@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.UWP", "UI.UWP\UI.UWP.csproj", "{3A235717-08C3-45B1-BB31-BBB986620B16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatTheToolkit", "WhatTheToolkit\WhatTheToolkit.csproj", "{A67FA455-B158-4D54-BBD4-A168A02E4302}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A235717-08C3-45B1-BB31-BBB986620B16}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3A235717-08C3-45B1-BB31-BBB986620B16}.Debug|Any CPU.Build.0 = Debug|x86
+		{3A235717-08C3-45B1-BB31-BBB986620B16}.Release|Any CPU.ActiveCfg = Release|x86
+		{3A235717-08C3-45B1-BB31-BBB986620B16}.Release|Any CPU.Build.0 = Release|x86
+		{A67FA455-B158-4D54-BBD4-A168A02E4302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A67FA455-B158-4D54-BBD4-A168A02E4302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A67FA455-B158-4D54-BBD4-A168A02E4302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A67FA455-B158-4D54-BBD4-A168A02E4302}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
