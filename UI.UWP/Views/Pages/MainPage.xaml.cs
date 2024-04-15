@@ -20,12 +20,10 @@ public sealed partial class MainPage : Page
     public MainPage()
     {
         this.InitializeComponent();
-        this.ViewModel = App.Services.GetRequiredService<MainViewModel>()
-                         ?? throw new ArgumentNullException(nameof(MainViewModel));
-        App.Current.Suspending += (_, _) => this.ViewModel.SaveStateCommand.Execute(null);
+        App.Current.Suspending += (_, _) => ViewModel.SaveStateCommand.Execute(null);
     }
 
-    public MainViewModel ViewModel { get; set; }
+    public static readonly MainViewModel ViewModel = new();
 
     private void PeopleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
