@@ -18,6 +18,29 @@
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="5" />
         </Style>
+
+        <DataTemplate x:Name="EntriesDetailsTemplate"
+                      x:DataType="viewmodels:PersonViewModel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal">
+                    <Button Content="Add"
+                            Command="{x:Bind AddEntryCommand}" />
+                    <Button Content="Remove"
+                            Command="{x:Bind DeleteEntryCommand}"
+                            CommandParameter="{x:Bind SelectedEntry, Mode=OneWay}" />
+                </StackPanel>
+                <controls:DataGrid
+                    x:Name="EntriesDataGrid"
+                    Grid.Row="1"
+                    SelectedItem="{x:Bind SelectedEntry, Mode=TwoWay}"
+                    ItemsSource="{x:Bind Entries, Mode=OneWay}" />
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -35,32 +58,19 @@
                 Margin="10"
                 CornerRadius="5"
                 Grid.Row="1">
-            <ScrollViewer>
-                <controls:DataGrid
-                    ItemsSource="{x:Bind ViewModel.People}"
-                    AutoGenerateColumns="False">
-                    <controls:DataGrid.Columns>
-                        <controls:DataGridTextColumn
-                            Header="First name"
-                            Binding="{Binding FirstName}" />
-                        <controls:DataGridTextColumn
-                            Header="Last name"
-                            Binding="{Binding LastName}" />
-                        <controls:DataGridTextColumn
-                            Header="Entries"
-                            Binding="{Binding Entries}" />
-                    </controls:DataGrid.Columns>
-                    <controls:DataGrid.RowDetailsTemplate>
-                        <DataTemplate>
-                            <ScrollViewer MinHeight="100">
-                                <controls:DataGrid
-                                    ItemsSource="{Binding Entries}">
-                                </controls:DataGrid>
-                            </ScrollViewer>
-                        </DataTemplate>
-                    </controls:DataGrid.RowDetailsTemplate>
-                </controls:DataGrid>
-            </ScrollViewer>
+            <controls:DataGrid
+                ItemsSource="{x:Bind ViewModel.People}"
+                AutoGenerateColumns="False"
+                RowDetailsTemplate="{StaticResource EntriesDetailsTemplate}">
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn
+                        Header="First name"
+                        Binding="{Binding FirstName}" />
+                    <controls:DataGridTextColumn
+                        Header="Last name"
+                        Binding="{Binding LastName}" />
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
         </Border>
     </Grid>
 </Page>
