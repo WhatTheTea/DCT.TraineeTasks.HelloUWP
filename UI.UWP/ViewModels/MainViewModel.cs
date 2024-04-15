@@ -14,23 +14,23 @@ using System.Windows.Input;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Services;
 using DCT.TraineeTasks.HelloUWP.WhatTheToolkit;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
 public class MainViewModel : BindableBase
 {
-    private readonly IFileServiceFactory _fileServiceFactory
-        = App.Services.GetService<IFileServiceFactory>()
-          ?? throw new ArgumentNullException(nameof(IFileServiceFactory));
+    private static readonly MainViewModel Instance;
+    private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
-    private readonly IFileService<IEnumerable<Person>> _peopleFileService;
+    private ObservableCollection<PersonViewModel> people = [];
 
-    private ObservableCollection<PersonViewModel> _people = [];
-
-    public MainViewModel()
+    static MainViewModel()
     {
-        this._peopleFileService = this._fileServiceFactory.GetJsonFileService<IEnumerable<Person>>();
+        Instance = new MainViewModel();
+    }
+
+    protected MainViewModel()
+    {
         this.AddPersonCommand = new RelayCommand(() => this.AddPerson(new PersonViewModel()));
         // TODO: AsyncCommands
         this.SaveStateCommand = new RelayCommand(async () => await this.SaveState());
@@ -39,10 +39,12 @@ public class MainViewModel : BindableBase
         this.LoadStateCommand.Execute(null);
     }
 
+    public static MainViewModel GetInstance() => Instance;
+
     public ObservableCollection<PersonViewModel> People
     {
-        get => this._people;
-        private set => this.SetAndRaise(ref this._people, value);
+        get => this.people;
+        private set => this.SetAndRaise(ref this.people, value);
     }
 
     public ICommand AddPersonCommand { get; }
@@ -53,7 +55,7 @@ public class MainViewModel : BindableBase
     {
         try
         {
-            IEnumerable<Person>? models = await this._peopleFileService
+            IEnumerable<Person>? models = await this.peopleFileService
                 .LoadAsync(nameof(this.People));
             IEnumerable<PersonViewModel> viewModels = models.Select(x => new PersonViewModel(x));
             this.People.Clear();
@@ -70,7 +72,7 @@ public class MainViewModel : BindableBase
     }
 
     private async Task SaveState() =>
-        await this._peopleFileService.SaveAsync(
+        await this.peopleFileService.SaveAsync(
             this.People.Select(x => x.Model),
             nameof(this.People));
 

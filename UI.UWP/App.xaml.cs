@@ -38,9 +38,6 @@ sealed partial class App : Application
         // just ensure that the window is active
         if (Window.Current.Content is not Frame rootFrame)
         {
-            // IoC
-            this._serviceProvider ??= ConfigureServiceProvider();
-
             // Create a Frame to act as the navigation context and navigate to the first page
             rootFrame = new Frame();
             rootFrame.NavigationFailed += this.OnNavigationFailed;

@@ -12,7 +12,7 @@ namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
 public class PersonViewModel : BindableBase
 {
-    private readonly Person _person;
+    private readonly Person person;
 
     public PersonViewModel() : this(new Person("Sample", "Text"))
     {
@@ -20,7 +20,7 @@ public class PersonViewModel : BindableBase
 
     public PersonViewModel(Person person)
     {
-        this._person = person;
+        this.person = person;
         this.Entries = new ObservableCollection<EntryViewModel>(person.Entries.Select(x => new EntryViewModel(x)));
 
         this.DeleteEntryCommand = new RelayCommand<EntryViewModel>(x
@@ -30,7 +30,7 @@ public class PersonViewModel : BindableBase
         this.DeleteCommand = new RelayCommand(() => { });
     }
 
-    public string Name => this._person.Name;
+    public string Name => this.person.Name;
 
     public ICommand DeleteCommand { get; set; }
     public ICommand DeleteEntryCommand { get; }
@@ -40,22 +40,22 @@ public class PersonViewModel : BindableBase
     {
         get
         {
-            this._person.Entries = this.Entries.Select(x => x.Model).ToArray();
-            return new(this._person);
+            this.person.Entries = this.Entries.Select(x => x.Model).ToArray();
+            return new(this.person);
         }
     }
 
     public string FirstName
     {
-        get => this._person.FirstName;
-        set => this.SetAndRaise(value, this._person, x => x.FirstName,
+        get => this.person.FirstName;
+        set => this.SetAndRaise(value, this.person, x => x.FirstName,
             propertyNames: nameof(this.Name));
     }
 
     public string LastName
     {
-        get => this._person.LastName;
-        set => this.SetAndRaise(value, this._person, x => x.LastName,
+        get => this.person.LastName;
+        set => this.SetAndRaise(value, this.person, x => x.LastName,
             propertyNames: nameof(this.Name));
     }
 
