@@ -19,14 +19,12 @@ public class BindableBase : INotifyPropertyChanged
 
     protected void SetAndRaise<T>(ref T original, T value, [CallerMemberName] string propertyName = null!)
     {
-        if (original is not null && original.Equals(value))
+        if (original is null || !original.Equals(value))
         {
-            return;
+            original = value;
+
+            this.OnPropertyChanged(propertyName);
         }
-
-        original = value;
-
-        this.OnPropertyChanged(propertyName);
     }
 
     /// <summary>
@@ -55,14 +53,12 @@ public class BindableBase : INotifyPropertyChanged
 
     private void NotifyOthers(params string[] propertyNames)
     {
-        if (propertyNames.Length < 1)
+        if (propertyNames.Length > 0)
         {
-            return;
-        }
-
-        foreach (string name in propertyNames)
-        {
-            this.OnPropertyChanged(name);
+            foreach (string name in propertyNames)
+            {
+                this.OnPropertyChanged(name);
+            }
         }
     }
 }

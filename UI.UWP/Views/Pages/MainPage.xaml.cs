@@ -29,12 +29,10 @@ public sealed partial class MainPage : Page
 
     private void PeopleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (e.AddedItems.FirstOrDefault() is null)
+        if (e.AddedItems.FirstOrDefault() is not null)
         {
-            return;
+            object selected = e.AddedItems.First();
+            this.Frame.Navigate(typeof(EditPage), selected);
         }
-
-        object selected = e.AddedItems.First();
-        this.Frame.Navigate(typeof(EditPage), selected);
     }
 }
