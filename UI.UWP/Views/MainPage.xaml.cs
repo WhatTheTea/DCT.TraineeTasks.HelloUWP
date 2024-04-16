@@ -2,12 +2,11 @@
 // Copyright (c) Digital Cloud Technologies.All rights reserved.
 // </copyright>
 
-using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
-namespace DCT.TraineeTasks.HelloUWP.UI.UWP.Views.Pages;
+namespace DCT.TraineeTasks.HelloUWP.UI.UWP.Views;
 
 public sealed partial class MainPage : Page
 {
@@ -17,5 +16,5 @@ public sealed partial class MainPage : Page
         Application.Current.Suspending += (_, _) => this.ViewModel.SaveStateCommand.Execute(null);
     }
 
-    public readonly MainViewModel ViewModel = MainViewModel.GetInstance();
+    public readonly MainViewModel ViewModel = MainViewModel.Instance;
 }

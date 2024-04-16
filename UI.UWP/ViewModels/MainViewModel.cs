@@ -20,7 +20,7 @@ namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
 public class MainViewModel : BindableBase
 {
-    private static readonly MainViewModel Instance = new();
+    public static MainViewModel Instance { get; } = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
     private ObservableCollection<PersonViewModel> people = [];
@@ -38,9 +38,6 @@ public class MainViewModel : BindableBase
 
         this.AddPlaceHolder();
     }
-
-
-    public static MainViewModel GetInstance() => Instance;
 
     public ObservableCollection<PersonViewModel> People
     {
