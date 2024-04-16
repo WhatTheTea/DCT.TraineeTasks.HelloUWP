@@ -25,9 +25,9 @@ public class MainViewModel : BindableBase
 
     private ObservableCollection<PersonViewModel> people = [];
 
-    private PersonViewModel PlaceholderPerson => new(new Person("[Add new]", string.Empty));
+    private static PersonViewModel PlaceholderPerson => new(new Person("[Add new]", string.Empty));
 
-    protected MainViewModel()
+    private MainViewModel()
     {
         this.AddPersonCommand = new RelayCommand(() => this.AddPerson(new PersonViewModel()));
         // TODO: AsyncCommands
@@ -36,7 +36,7 @@ public class MainViewModel : BindableBase
 
         this.LoadStateCommand.Execute(null);
 
-        this.PlaceHolderSubscribe();
+        this.AddPlaceHolder();
     }
 
 
@@ -52,50 +52,52 @@ public class MainViewModel : BindableBase
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
 
-    private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)
+    private void AddPlaceHolder()
     {
-        var person = sender as PersonViewModel ?? throw new ArgumentException("sender is not PersonViewModel", nameof(sender));
-        person.PropertyChanged -= this.OnPlaceholderEdit;
-        this.People.Add(this.PlaceholderPerson);
-        this.PlaceHolderSubscribe();
+        this.AddPerson(PlaceholderPerson);
+        PersonViewModel last = this.People.Last();
+        last.PropertyChanged += this.OnPlaceholderEdit;
     }
 
-    private void PlaceHolderSubscribe()
+    private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)
     {
-        PersonViewModel? last = this.People.LastOrDefault();
-        if (last is not null)
-        {
-            last.PropertyChanged += this.OnPlaceholderEdit;
-        }
+        PersonViewModel person = sender as PersonViewModel ??
+                                 throw new ArgumentException("sender is not PersonViewModel", nameof(sender));
+        person.PropertyChanged -= this.OnPlaceholderEdit;
+        this.AddPlaceHolder();
     }
 
     private async Task LoadState()
     {
         try
         {
-            IEnumerable<Person>? models = await this.peopleFileService
+            IEnumerable<Person> models = await this.peopleFileService
                 .LoadAsync(nameof(this.People));
             IEnumerable<PersonViewModel> viewModels = models.Select(x => new PersonViewModel(x));
+
             this.People.Clear();
+
             foreach (PersonViewModel person in viewModels)
             {
                 this.AddPerson(person);
             }
-            this.AddPerson(this.PlaceholderPerson);
         }
         catch (Exception ex)
-        when (ex is JsonException || ex is FileNotFoundException)
+            when (ex is JsonException or FileNotFoundException)
         {
-            Debug.WriteLine(ex);
+            Trace.WriteLine(ex);
         }
     }
 
-    private async Task SaveState() =>
-        await this.peopleFileService.SaveAsync(
-            this.People
-                .Take(this.People.Count-1) // Discard placeholder
-                .Select(x => x.Model),
+    private async Task SaveState()
+    {
+        IEnumerable<Person> data = this.People
+            .Take(this.People.Count - 1) // Discard placeholder
+            .Select(x => x.Model);
+
+        await this.peopleFileService.SaveAsync(data,
             nameof(this.People));
+    }
 
     private void AddPerson(PersonViewModel person)
     {
