@@ -59,7 +59,7 @@
                 CornerRadius="5"
                 Grid.Row="1">
             <controls:DataGrid
-                ItemsSource="{x:Bind ViewModel.People}"
+                ItemsSource="{x:Bind ViewModel.People, Mode = OneWay}"
                 AutoGenerateColumns="False"
                 RowDetailsTemplate="{StaticResource EntriesDetailsTemplate}">
                 <controls:DataGrid.Columns>
