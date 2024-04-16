@@ -61,6 +61,8 @@ public class PlaceholderObservableCollectionWrapper<T> : ObservableCollection<T>
         }
     }
 
+    public IEnumerable<T> GetReal() => this.Take(this.Count-1);
+
     private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)
     {
         T item = sender as T ?? throw new ArgumentException($"sender is not {typeof(T)}", nameof(sender));
