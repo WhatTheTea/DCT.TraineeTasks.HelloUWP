@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Services;
+using DCT.TraineeTasks.HelloUWP.UI.UWP.Wrappers;
 using DCT.TraineeTasks.HelloUWP.WhatTheToolkit;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
@@ -23,7 +24,7 @@ public class MainViewModel : BindableBase
     public static MainViewModel Instance { get; } = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
-    private ObservablePlaceholderCollection<PersonViewModel> people = new(() => new PersonViewModel(new Person("[Add new]", string.Empty)));
+    private PlaceholderObservableCollectionWrapper<PersonViewModel> people = new(() => new PersonViewModel(new Person("[Add new]", string.Empty)));
 
     private MainViewModel()
     {
@@ -35,7 +36,7 @@ public class MainViewModel : BindableBase
         this.LoadStateCommand.Execute(null);
     }
 
-    public ObservablePlaceholderCollection<PersonViewModel> People
+    public PlaceholderObservableCollectionWrapper<PersonViewModel> People
     {
         get => this.people;
         private set => this.SetAndRaise(ref this.people, value);

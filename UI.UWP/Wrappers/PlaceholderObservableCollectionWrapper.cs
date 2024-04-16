@@ -1,23 +1,20 @@
-﻿// <copyright file = "ObservablePlaceholderCollection.cs" company = "Digital Cloud Technologies">
+﻿// <copyright file = "PlaceholderObservableCollectionWrapper.cs" company = "Digital Cloud Technologies">
 // Copyright (c) Digital Cloud Technologies.All rights reserved.
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DCT.TraineeTasks.HelloUWP.WhatTheToolkit;
 
-namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
+namespace DCT.TraineeTasks.HelloUWP.UI.UWP.Wrappers;
 
 /// <summary>
 /// Behaved mostly like ObservableCollection, but last element is a placeholder for a new one
 /// </summary>
 /// <typeparam name="T"><inheritdoc/></typeparam>
-public class ObservablePlaceholderCollection<T> : ObservableCollection<T>
+public class PlaceholderObservableCollectionWrapper<T> : ObservableCollection<T>
     where T : BindableBase
 {
     private readonly Func<T> placeholderFactory;
@@ -27,7 +24,7 @@ public class ObservablePlaceholderCollection<T> : ObservableCollection<T>
     /// </summary>
     /// <typeparam name="T"><inheritdoc/></typeparam>
     /// <param name="placeholderFactory">Factory method to return a new placeholder</param>
-    public ObservablePlaceholderCollection(Func<T> placeholderFactory)
+    public PlaceholderObservableCollectionWrapper(Func<T> placeholderFactory)
     {
         this.placeholderFactory = placeholderFactory;
         this.AddNewPlaceholder();
@@ -46,7 +43,10 @@ public class ObservablePlaceholderCollection<T> : ObservableCollection<T>
         this.AddNewPlaceholder();
     }
 
-    /// <inheritdoc cref="Collection{T}.Add" />
+    /// <summary>
+    /// Adds new item before placeholder
+    /// </summary>
+    /// <param name="item">Item to add</param>
     public new void Add(T item)
     {
         base.Add(this.Last());
