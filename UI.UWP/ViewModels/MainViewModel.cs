@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,15 +20,12 @@ namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
 public class MainViewModel : BindableBase
 {
-    private static readonly MainViewModel Instance;
+    private static readonly MainViewModel Instance = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
     private ObservableCollection<PersonViewModel> people = [];
 
-    static MainViewModel()
-    {
-        Instance = new MainViewModel();
-    }
+    private PersonViewModel PlaceholderPerson => new(new Person("[Add new]", string.Empty));
 
     protected MainViewModel()
     {
@@ -36,8 +34,11 @@ public class MainViewModel : BindableBase
         this.SaveStateCommand = new RelayCommand(async () => await this.SaveState());
         this.LoadStateCommand = new RelayCommand(async () => await this.LoadState());
 
-        this.LoadStateCommand.Execute(null);
+        this.LoadState().GetAwaiter().GetResult();
+
+        this.PlaceHolderSubscribe();
     }
+
 
     public static MainViewModel GetInstance() => Instance;
 
@@ -51,6 +52,23 @@ public class MainViewModel : BindableBase
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
 
+    private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)
+    {
+        var person = sender as PersonViewModel ?? throw new ArgumentException("sender is not PersonViewModel", nameof(sender));
+        person.PropertyChanged -= this.OnPlaceholderEdit;
+        this.People.Add(this.PlaceholderPerson);
+        this.PlaceHolderSubscribe();
+    }
+
+    private void PlaceHolderSubscribe()
+    {
+        PersonViewModel? last = this.People.LastOrDefault();
+        if (last is not null)
+        {
+            last.PropertyChanged += this.OnPlaceholderEdit;
+        }
+    }
+
     private async Task LoadState()
     {
         try
@@ -63,6 +81,7 @@ public class MainViewModel : BindableBase
             {
                 this.AddPerson(person);
             }
+            this.AddPerson(this.PlaceholderPerson);
         }
         catch (Exception ex)
         when (ex is JsonException || ex is FileNotFoundException)
@@ -73,7 +92,9 @@ public class MainViewModel : BindableBase
 
     private async Task SaveState() =>
         await this.peopleFileService.SaveAsync(
-            this.People.Select(x => x.Model),
+            this.People
+                .Take(this.People.Count-1) // Discard placeholder
+                .Select(x => x.Model),
             nameof(this.People));
 
     private void AddPerson(PersonViewModel person)
