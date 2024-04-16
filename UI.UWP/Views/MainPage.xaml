@@ -23,20 +23,11 @@
                       x:DataType="viewmodels:PersonViewModel">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0"
-                            Orientation="Horizontal">
-                    <Button Content="Add"
-                            Command="{x:Bind AddEntryCommand}" />
-                    <Button Content="Remove"
-                            Command="{x:Bind DeleteEntryCommand}"
-                            CommandParameter="{x:Bind SelectedEntry, Mode=OneWay}" />
-                </StackPanel>
                 <controls:DataGrid
                     x:Name="EntriesDataGrid"
-                    Grid.Row="1"
+                    Grid.Row="0"
                     SelectedItem="{x:Bind SelectedEntry, Mode=TwoWay}"
                     ItemsSource="{x:Bind Entries, Mode=OneWay}" />
             </Grid>
