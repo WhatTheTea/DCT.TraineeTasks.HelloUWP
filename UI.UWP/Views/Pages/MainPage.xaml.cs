@@ -23,13 +23,4 @@ public sealed partial class MainPage : Page
     }
 
     public readonly MainViewModel ViewModel = MainViewModel.GetInstance();
-
-    private void PeopleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (e.AddedItems.FirstOrDefault() is not null)
-        {
-            object selected = e.AddedItems.First();
-            this.Frame.Navigate(typeof(EditPage), selected);
-        }
-    }
 }
