@@ -60,7 +60,9 @@ public class PlaceholderObservableCollectionWrapper<T> : ObservableCollection<T>
             this.Add(item);
         }
     }
-
+    /// <summary>
+    /// Returns items without placeholder
+    /// </summary>
     public IEnumerable<T> GetReal() => this.Take(this.Count-1);
 
     private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)

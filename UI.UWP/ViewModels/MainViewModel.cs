@@ -24,11 +24,16 @@ public class MainViewModel : BindableBase
     public static MainViewModel Instance { get; } = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
-    private PlaceholderObservableCollectionWrapper<PersonViewModel> people = new(() => new PersonViewModel(new Person("[Add new]", string.Empty)));
+    private PlaceholderObservableCollectionWrapper<PersonViewModel> people;
 
     private MainViewModel()
     {
-        this.AddPersonCommand = new RelayCommand(() => this.AddPerson(new PersonViewModel()));
+        this.people = new PlaceholderObservableCollectionWrapper<PersonViewModel>(() =>
+        {
+            var person = new PersonViewModel(new Person("[Add new]", string.Empty));
+            person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
+            return person;
+        });
         // TODO: AsyncCommands
         this.SaveStateCommand = new RelayCommand(async () => await this.SaveState());
         this.LoadStateCommand = new RelayCommand(async () => await this.LoadState());
@@ -41,8 +46,6 @@ public class MainViewModel : BindableBase
         get => this.people;
         private set => this.SetAndRaise(ref this.people, value);
     }
-
-    public ICommand AddPersonCommand { get; }
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
 
@@ -52,10 +55,14 @@ public class MainViewModel : BindableBase
         {
             IEnumerable<Person> models = await this.peopleFileService
                 .LoadAsync(nameof(this.People));
-            IEnumerable<PersonViewModel> viewModels = models.Select(x => new PersonViewModel(x));
+            IEnumerable<PersonViewModel> viewModels = models.Select(x =>
+            {
+                var person = new PersonViewModel(x);
+                person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
+                return person;
+            });
 
             this.People.Clear();
-
             this.People.AddMany(viewModels);
         }
         catch (Exception ex)
@@ -68,16 +75,10 @@ public class MainViewModel : BindableBase
     private async Task SaveState()
     {
         IEnumerable<Person> data = this.People
-            .Take(this.People.Count - 1) // Discard placeholder
+            .GetReal()
             .Select(x => x.Model);
 
         await this.peopleFileService.SaveAsync(data,
             nameof(this.People));
-    }
-
-    private void AddPerson(PersonViewModel person)
-    {
-        person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
-        this.People.Add(person);
     }
 }
