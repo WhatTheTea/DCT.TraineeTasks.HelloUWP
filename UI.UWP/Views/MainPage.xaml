@@ -28,15 +28,23 @@
                 <controls:DataGrid
                     x:Name="EntriesDataGrid"
                     Grid.Row="0"
+                    AutoGenerateColumns="False"
                     SelectedItem="{x:Bind SelectedEntry, Mode=TwoWay}"
-                    ItemsSource="{x:Bind Entries, Mode=OneWay}" />
+                    ItemsSource="{x:Bind Entries, Mode=OneWay}">
+                    <controls:DataGrid.Columns>
+                        <controls:DataGridTextColumn
+                            Header="Text"
+                            Binding="{Binding Text}"/>
+                        <controls:DataGridTemplateColumn
+                            CellTemplate="{StaticResource DeleteButtonCellTemplate}"/>
+                    </controls:DataGrid.Columns>
+                </controls:DataGrid>
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Name="DeletePersonButtonTemplate"
-                      x:DataType="viewmodels:PersonViewModel">
+        <DataTemplate x:Name="DeleteButtonCellTemplate">
             <Button Content="x"
-                    Command="{x:Bind DeleteCommand}"/>
+                    Command="{Binding DeleteCommand}"/>
         </DataTemplate>
     </Page.Resources>
     <Grid>
@@ -62,7 +70,7 @@
                         Binding="{Binding LastName}" />
                     <controls:DataGridTemplateColumn
                         Header=""
-                        CellTemplate="{StaticResource DeletePersonButtonTemplate}"/>
+                        CellTemplate="{StaticResource DeleteButtonCellTemplate}"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Border>

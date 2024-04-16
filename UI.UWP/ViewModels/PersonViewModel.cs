@@ -75,7 +75,7 @@ public class PersonViewModel : BindableBase
     {
         get
         {
-            this.person.Entries = this.Entries.Select(x => x.Model).ToArray();
+            this.person.Entries = this.Entries.GetReal().Select(x => x.Model).ToArray();
             return new(this.person);
         }
     }
