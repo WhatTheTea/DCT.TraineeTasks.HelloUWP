@@ -41,6 +41,12 @@
                     ItemsSource="{x:Bind Entries, Mode=OneWay}" />
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Name="DeletePersonButtonTemplate"
+                      x:DataType="viewmodels:PersonViewModel">
+            <Button Content="x"
+                    Command="{x:Bind DeleteCommand}"/>
+        </DataTemplate>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -63,6 +69,9 @@
                     <controls:DataGridTextColumn
                         Header="Last name"
                         Binding="{Binding LastName}" />
+                    <controls:DataGridTemplateColumn
+                        Header=""
+                        CellTemplate="{StaticResource DeletePersonButtonTemplate}"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Border>

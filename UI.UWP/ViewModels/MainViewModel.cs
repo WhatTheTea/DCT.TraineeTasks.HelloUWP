@@ -34,7 +34,7 @@ public class MainViewModel : BindableBase
         this.SaveStateCommand = new RelayCommand(async () => await this.SaveState());
         this.LoadStateCommand = new RelayCommand(async () => await this.LoadState());
 
-        this.LoadState().GetAwaiter().GetResult();
+        this.LoadStateCommand.Execute(null);
 
         this.PlaceHolderSubscribe();
     }
@@ -99,7 +99,13 @@ public class MainViewModel : BindableBase
 
     private void AddPerson(PersonViewModel person)
     {
-        person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
+        person.DeleteCommand = new RelayCommand(() =>
+        {
+            if (person != this.People.Last())
+            {
+                this.People.Remove(person);
+            }
+        });
         this.People.Add(person);
     }
 }
