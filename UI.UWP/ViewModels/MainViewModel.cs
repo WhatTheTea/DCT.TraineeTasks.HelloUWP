@@ -23,9 +23,7 @@ public class MainViewModel : BindableBase
     public static MainViewModel Instance { get; } = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
-    private ObservableCollection<PersonViewModel> people = [];
-
-    private static PersonViewModel PlaceholderPerson => new(new Person("[Add new]", string.Empty));
+    private ObservablePlaceholderCollection<PersonViewModel> people = new(() => new PersonViewModel(new Person("[Add new]", string.Empty)));
 
     private MainViewModel()
     {
@@ -35,11 +33,9 @@ public class MainViewModel : BindableBase
         this.LoadStateCommand = new RelayCommand(async () => await this.LoadState());
 
         this.LoadStateCommand.Execute(null);
-
-        this.AddPlaceHolder();
     }
 
-    public ObservableCollection<PersonViewModel> People
+    public ObservablePlaceholderCollection<PersonViewModel> People
     {
         get => this.people;
         private set => this.SetAndRaise(ref this.people, value);
@@ -48,21 +44,6 @@ public class MainViewModel : BindableBase
     public ICommand AddPersonCommand { get; }
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
-
-    private void AddPlaceHolder()
-    {
-        this.AddPerson(PlaceholderPerson);
-        PersonViewModel last = this.People.Last();
-        last.PropertyChanged += this.OnPlaceholderEdit;
-    }
-
-    private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)
-    {
-        PersonViewModel person = sender as PersonViewModel ??
-                                 throw new ArgumentException("sender is not PersonViewModel", nameof(sender));
-        person.PropertyChanged -= this.OnPlaceholderEdit;
-        this.AddPlaceHolder();
-    }
 
     private async Task LoadState()
     {
@@ -98,13 +79,7 @@ public class MainViewModel : BindableBase
 
     private void AddPerson(PersonViewModel person)
     {
-        person.DeleteCommand = new RelayCommand(() =>
-        {
-            if (person != this.People.Last())
-            {
-                this.People.Remove(person);
-            }
-        });
+        person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
         this.People.Add(person);
     }
 }

@@ -12,42 +12,58 @@ using System.Threading.Tasks;
 using DCT.TraineeTasks.HelloUWP.WhatTheToolkit;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
+
 /// <summary>
-/// Behaved mostly like ObservableCollection, but last element is a placeholderFactory for a new one
+/// Behaved mostly like ObservableCollection, but last element is a placeholder for a new one
 /// </summary>
 /// <typeparam name="T"><inheritdoc/></typeparam>
-/// <param name="placeholderFactory">Factory method to return a new placeholder</param>
-internal class ObservablePlaceholderCollection<T>(Func<T> placeholderFactory) : ObservableCollection<T>
+public class ObservablePlaceholderCollection<T> : ObservableCollection<T>
     where T : BindableBase
 {
+    private readonly Func<T> placeholderFactory;
+
+    /// <summary>
+    /// Behaved mostly like ObservableCollection, but last element is a placeholder for a new one
+    /// </summary>
+    /// <typeparam name="T"><inheritdoc/></typeparam>
+    /// <param name="placeholderFactory">Factory method to return a new placeholder</param>
+    public ObservablePlaceholderCollection(Func<T> placeholderFactory)
+    {
+        this.placeholderFactory = placeholderFactory;
+        this.AddNewPlaceholder();
+    }
+
     /// <inheritdoc cref="Collection{T}.Remove" />
     public new bool Remove(T item)
     {
-        return this.Last()!.Equals(item) && base.Remove(item);
+        return !this.Last().Equals(item) && base.Remove(item);
     }
 
     /// <inheritdoc cref="Collection{T}.Clear" />
     public new void Clear()
     {
         base.Clear();
-        base.Add(placeholderFactory());
+        this.AddNewPlaceholder();
     }
 
     /// <inheritdoc cref="Collection{T}.Add" />
     public new void Add(T item)
     {
-        base.Add(item);
-        T last = this.Last();
-        last.PropertyChanged += this.OnPlaceholderEdit;
+        base.Add(this.Last());
+        base[this.Count - 2] = item;
     }
 
     private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)
     {
-        PersonViewModel person = sender as PersonViewModel ??
-                                 throw new ArgumentException($"sender is not {typeof(T)}", nameof(sender));
-        person.PropertyChanged -= this.OnPlaceholderEdit;
-        this.Add(placeholderFactory());
+        T item = sender as T ?? throw new ArgumentException($"sender is not {typeof(T)}", nameof(sender));
+        item.PropertyChanged -= this.OnPlaceholderEdit;
+        this.AddNewPlaceholder();
     }
 
-    
+    private void AddNewPlaceholder()
+    {
+        T newPlaceholder = this.placeholderFactory();
+        base.Add(newPlaceholder);
+        newPlaceholder.PropertyChanged += this.OnPlaceholderEdit;
+    }
 }
