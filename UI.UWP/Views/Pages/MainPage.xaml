@@ -47,10 +47,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="0">
-            <Button Content="Add person" Command="{x:Bind ViewModel.AddPersonCommand}" />
-        </StackPanel>
         <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
                 BorderThickness="2"
                 Margin="10"
