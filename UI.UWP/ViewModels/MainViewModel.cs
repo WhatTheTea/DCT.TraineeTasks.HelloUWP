@@ -56,10 +56,7 @@ public class MainViewModel : BindableBase
 
             this.People.Clear();
 
-            foreach (PersonViewModel person in viewModels)
-            {
-                this.AddPerson(person);
-            }
+            this.People.AddMany(viewModels);
         }
         catch (Exception ex)
             when (ex is JsonException or FileNotFoundException)

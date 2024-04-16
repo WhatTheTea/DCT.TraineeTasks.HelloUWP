@@ -2,10 +2,13 @@
 // Copyright (c) Digital Cloud Technologies.All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Windows.UI.Xaml;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
+using DCT.TraineeTasks.HelloUWP.UI.UWP.Wrappers;
 using DCT.TraineeTasks.HelloUWP.WhatTheToolkit;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
@@ -14,6 +17,7 @@ public class PersonViewModel : BindableBase
 {
     private readonly Person person;
     private EntryViewModel? selectedEntry;
+    private static EntryViewModel EntryPlaceholder => new(new Entry { Text = "[Add new]"});
 
     public PersonViewModel() : this(new Person("Sample", "Text"))
     {
@@ -22,7 +26,7 @@ public class PersonViewModel : BindableBase
     public PersonViewModel(Person person)
     {
         this.person = person;
-        this.Entries = new ObservableCollection<EntryViewModel>(person.Entries.Select(x => new EntryViewModel(x)));
+        this.Entries.AddMany(person.Entries.Select(x => new EntryViewModel(x)));
 
         this.DeleteEntryCommand = new RelayCommand<EntryViewModel?>(this.RemoveEntry);
         this.AddEntryCommand = new RelayCommand(this.AddEntry);
@@ -68,7 +72,7 @@ public class PersonViewModel : BindableBase
             propertyNames: nameof(this.Name));
     }
 
-    public ObservableCollection<EntryViewModel> Entries { get; }
+    public PlaceholderObservableCollectionWrapper<EntryViewModel> Entries { get; } = new(() => EntryPlaceholder);
 
     public EntryViewModel? SelectedEntry
     {
