@@ -125,6 +125,7 @@
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\JsonFileService.cs" />
     <Compile Include="ViewModels\EntryViewModel.cs" />
+    <Compile Include="ViewModels\ObservablePlaceholderCollection.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
