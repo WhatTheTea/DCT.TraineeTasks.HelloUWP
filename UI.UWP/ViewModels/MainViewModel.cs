@@ -24,16 +24,24 @@ public class MainViewModel : BindableBase
     public static MainViewModel Instance { get; } = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
-    private PlaceholderObservableCollectionWrapper<PersonViewModel> people;
-
-    private MainViewModel()
+    private PersonViewModel PlaceholderPersonViewModel
     {
-        this.people = new PlaceholderObservableCollectionWrapper<PersonViewModel>(() =>
+        get
         {
             var person = new PersonViewModel(new Person("[Add new]", string.Empty));
             person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
             return person;
-        });
+        }
+    }
+
+    private PlaceholderObservableCollectionWrapper<PersonViewModel> people;
+
+
+    private MainViewModel()
+    {
+        this.people =
+            new PlaceholderObservableCollectionWrapper<PersonViewModel>(() => this.PlaceholderPersonViewModel);
+
         // TODO: AsyncCommands
         this.SaveStateCommand = new RelayCommand(async () => await this.SaveState());
         this.LoadStateCommand = new RelayCommand(async () => await this.LoadState());
@@ -46,6 +54,7 @@ public class MainViewModel : BindableBase
         get => this.people;
         private set => this.SetAndRaise(ref this.people, value);
     }
+
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
 

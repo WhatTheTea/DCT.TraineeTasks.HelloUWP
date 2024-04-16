@@ -17,44 +17,13 @@ public class PersonViewModel : BindableBase
 {
     private readonly Person person;
     private EntryViewModel? selectedEntry;
-    private static EntryViewModel EntryPlaceholder => new(new Entry { Text = "[Add new]"});
-
-    public PersonViewModel() : this(new Person("Sample", "Text"))
-    {
-    }
-
-    public PersonViewModel(Person person)
-    {
-        this.person = person;
-        this.Entries.AddMany(person.Entries.Select(x => new EntryViewModel(x)));
-
-        this.DeleteEntryCommand = new RelayCommand<EntryViewModel?>(this.RemoveEntry);
-        this.AddEntryCommand = new RelayCommand(this.AddEntry);
-        this.DeleteCommand = new RelayCommand(() => { });
-    }
-
-    public void AddEntry() => this.Entries.Add(new EntryViewModel { Text = "Sample text" });
-
-    public void RemoveEntry(EntryViewModel? entry)
-    {
-        if (entry is not null)
-        {
-            this.Entries.Remove(entry);
-        }
-    }
-
-    public string Name => this.person.Name;
-
-    public ICommand DeleteCommand { get; set; }
-    public ICommand DeleteEntryCommand { get; }
-    public ICommand AddEntryCommand { get; }
-
-    internal Person Model
+    private EntryViewModel EntryPlaceholder
     {
         get
         {
-            this.person.Entries = this.Entries.Select(x => x.Model).ToArray();
-            return new(this.person);
+            var entry = new EntryViewModel(new Entry { Text = "[Add new]" });
+            entry.DeleteCommand = new RelayCommand(() => this.Entries.Remove(entry));
+            return entry;
         }
     }
 
@@ -72,11 +41,42 @@ public class PersonViewModel : BindableBase
             propertyNames: nameof(this.Name));
     }
 
-    public PlaceholderObservableCollectionWrapper<EntryViewModel> Entries { get; } = new(() => EntryPlaceholder);
+    public PlaceholderObservableCollectionWrapper<EntryViewModel> Entries { get; }
 
     public EntryViewModel? SelectedEntry
     {
         get => this.selectedEntry;
         set => this.SetAndRaise(ref this.selectedEntry, value);
+    }
+
+    public PersonViewModel() : this(new Person("Sample", "Text"))
+    {
+    }
+
+    public PersonViewModel(Person person)
+    {
+        this.person = person;
+        this.Entries = new PlaceholderObservableCollectionWrapper<EntryViewModel>(() => this.EntryPlaceholder);
+        this.Entries.AddMany(person.Entries.Select(x =>
+        {
+            var entry = new EntryViewModel(x);
+            entry.DeleteCommand = new RelayCommand(() => this.Entries.Remove(entry));
+            return entry;
+        }));
+
+        this.DeleteCommand = new RelayCommand(() => { });
+    }
+
+    public string Name => this.person.Name;
+
+    public ICommand DeleteCommand { get; set; }
+
+    internal Person Model
+    {
+        get
+        {
+            this.person.Entries = this.Entries.Select(x => x.Model).ToArray();
+            return new(this.person);
+        }
     }
 }
