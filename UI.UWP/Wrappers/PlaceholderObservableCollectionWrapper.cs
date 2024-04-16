@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -51,6 +52,14 @@ public class PlaceholderObservableCollectionWrapper<T> : ObservableCollection<T>
     {
         base.Add(this.Last());
         base[this.Count - 2] = item;
+    }
+
+    public void AddMany(IEnumerable<T> items)
+    {
+        foreach (T item in items)
+        {
+            this.Add(item);
+        }
     }
 
     private void OnPlaceholderEdit(object sender, PropertyChangedEventArgs _)
