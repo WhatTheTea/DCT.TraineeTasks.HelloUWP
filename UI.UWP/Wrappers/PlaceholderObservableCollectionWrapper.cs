@@ -50,8 +50,7 @@ public class PlaceholderObservableCollectionWrapper<T> : ObservableCollection<T>
     /// <param name="item">Item to add</param>
     public new void Add(T item)
     {
-        base.Add(this.Last());
-        base[this.Count - 2] = item;
+        this.Items.Insert(this.Count - 1, item);
     }
 
     public void AddMany(IEnumerable<T> items)
