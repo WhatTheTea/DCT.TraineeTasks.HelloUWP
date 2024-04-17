@@ -6,8 +6,8 @@ namespace DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
 
 public class Person(string firstName, string lastName)
 {
-    public Person(Person other) : this(other.FirstName, other.LastName) =>
-        this.Entries = (Entry[])other.Entries.Clone();
+    public Person(Person other) : this(other.FirstName, other.LastName)
+    {}
 
     public Person() : this(string.Empty, string.Empty)
     {
@@ -16,5 +16,4 @@ public class Person(string firstName, string lastName)
     public string Name => $"{this.FirstName} {this.LastName}";
     public string LastName { get; set; } = lastName;
     public string FirstName { get; set; } = firstName;
-    public Entry[] Entries { get; set; } = [];
 }
