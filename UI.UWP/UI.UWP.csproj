@@ -120,11 +120,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entry.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\JsonFileService.cs" />
-    <Compile Include="ViewModels\EntryViewModel.cs" />
     <Compile Include="Wrappers\PlaceholderObservableCollectionWrapper.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
