@@ -19,17 +19,24 @@ public class JsonFileService<T> : IFileService<T>
     public async Task SaveAsync(T data, string path)
     {
         StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-        StorageFile storageFile = await storageFolder.CreateFileAsync(path, CreationCollisionOption.ReplaceExisting);
-        using Stream? file = await storageFile.OpenStreamForWriteAsync();
-        await JsonSerializer.SerializeAsync(file, data, Options);
+        StorageFile storageFile = await storageFolder.CreateFileAsync(path, CreationCollisionOption.ReplaceExisting)
+            .AsTask().ConfigureAwait(false);
+        using var stream = await storageFile.OpenStreamForWriteAsync().ConfigureAwait(false);
+        await JsonSerializer.SerializeAsync(stream, data, Options).ConfigureAwait(false);
     }
 
     public async Task<T> LoadAsync(string path)
     {
         StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-        StorageFile storageFile = await storageFolder.GetFileAsync(path);
-        using Stream? file = await storageFile.OpenStreamForReadAsync();
-        return await JsonSerializer.DeserializeAsync<T>(file, Options)
+        StorageFile storageFile = await storageFolder.GetFileAsync(path).AsTask().ConfigureAwait(false);
+        using var stream = await storageFile.OpenStreamForReadAsync().ConfigureAwait(false);
+        return await JsonSerializer.DeserializeAsync<T>(stream, Options).ConfigureAwait(false)
                ?? throw new FormatException("Invalid JSON");
     }
+
+    public void Save(T data, string path) => this.SaveAsync(data, path)
+        .ConfigureAwait(false).GetAwaiter().GetResult();
+
+    public T Load(string path) => this.LoadAsync(path)
+        .ConfigureAwait(false).GetAwaiter().GetResult();
 }
