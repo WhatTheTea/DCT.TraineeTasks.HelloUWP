@@ -11,4 +11,6 @@ internal interface IFileService<T>
 {
     public Task SaveAsync(T data, string path);
     public Task<T> LoadAsync(string path);
+    public void Save(T data, string path);
+    public T Load(string path);
 }

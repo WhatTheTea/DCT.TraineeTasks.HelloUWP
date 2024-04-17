@@ -43,8 +43,8 @@ public class MainViewModel : BindableBase
             new PlaceholderObservableCollectionWrapper<PersonViewModel>(() => this.PlaceholderPersonViewModel);
 
         // TODO: AsyncCommands
-        this.SaveStateCommand = new RelayCommand(async () => await this.SaveState());
-        this.LoadStateCommand = new RelayCommand(async () => await this.LoadState());
+        this.SaveStateCommand = new RelayCommand(() => this.SaveState());
+        this.LoadStateCommand = new RelayCommand(() => this.LoadState());
 
         this.LoadStateCommand.Execute(null);
     }
@@ -58,12 +58,12 @@ public class MainViewModel : BindableBase
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
 
-    private async Task LoadState()
+    private void LoadState()
     {
         try
         {
-            IEnumerable<Person> models = await this.peopleFileService
-                .LoadAsync(nameof(this.People));
+            IEnumerable<Person> models = this.peopleFileService
+                .Load(nameof(this.People));
             IEnumerable<PersonViewModel> viewModels = models.Select(x =>
             {
                 var person = new PersonViewModel(x);
@@ -81,13 +81,13 @@ public class MainViewModel : BindableBase
         }
     }
 
-    private async Task SaveState()
+    private void SaveState()
     {
         IEnumerable<Person> data = this.People
             .GetReal()
             .Select(x => x.Model);
 
-        await this.peopleFileService.SaveAsync(data,
+        this.peopleFileService.Save(data,
             nameof(this.People));
     }
 }
