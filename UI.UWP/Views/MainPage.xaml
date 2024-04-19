@@ -19,10 +19,6 @@
             <Setter Property="Margin" Value="5" />
         </Style>
 
-        <DataTemplate x:Name="DeleteButtonCellTemplate">
-            <Button Content="x"
-                    Command="{Binding RemovePersonCommand,  ElementName=ViewModel}"/>
-        </DataTemplate>
     </Page.Resources>
 
     <Grid>
@@ -30,6 +26,14 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal">
+            <Button
+                Content="Add person"/>
+            <Button
+                Content="Delete person"
+                Command="{x:Bind ViewModel.RemovePersonCommand}"/>
+        </StackPanel>
         <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
                 BorderThickness="2"
                 Margin="10"
@@ -46,9 +50,6 @@
                     <controls:DataGridTextColumn
                         Header="Last name"
                         Binding="{Binding LastName}" />
-                    <controls:DataGridTemplateColumn
-                        Header=""
-                        CellTemplate="{StaticResource DeleteButtonCellTemplate}"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Border>
