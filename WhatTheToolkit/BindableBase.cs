@@ -42,8 +42,8 @@ public class BindableBase : INotifyPropertyChanged
         [CallerMemberName] string propertyName = null!,
         params string[] propertyNames)
     {
-        MemberExpression expression = (MemberExpression)selector.Body;
-        PropertyInfo property = (PropertyInfo)expression.Member;
+        var expression = (MemberExpression)selector.Body;
+        var property = (PropertyInfo)expression.Member;
         property.SetValue(target, value);
 
         this.OnPropertyChanged(propertyName);
@@ -55,7 +55,7 @@ public class BindableBase : INotifyPropertyChanged
     {
         if (propertyNames.Length > 0)
         {
-            foreach (string name in propertyNames)
+            foreach (var name in propertyNames)
             {
                 this.OnPropertyChanged(name);
             }
