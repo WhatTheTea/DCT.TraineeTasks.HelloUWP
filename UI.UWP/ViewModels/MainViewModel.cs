@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
 using DCT.TraineeTasks.HelloUWP.UI.UWP.Services;
-using DCT.TraineeTasks.HelloUWP.UI.UWP.Wrappers;
 using DCT.TraineeTasks.HelloUWP.WhatTheToolkit;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
