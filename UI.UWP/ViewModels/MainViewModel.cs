@@ -46,8 +46,8 @@ public class MainViewModel : BindableBase
     private MainViewModel()
     {
         // TODO: AsyncCommands
-        this.SaveStateCommand = new RelayCommand(() => this.SaveState());
-        this.LoadStateCommand = new RelayCommand(() => this.LoadState());
+        this.SaveStateCommand = new RelayCommand(async () => await this.SaveState());
+        this.LoadStateCommand = new RelayCommand(async () => await this.LoadState());
         this.RemovePersonCommand = new RelayCommand(() =>
         {
             if (this.SelectedPerson is not null)
@@ -60,12 +60,12 @@ public class MainViewModel : BindableBase
     }
 
 
-    private void LoadState()
+    private async Task LoadState()
     {
         try
         {
-            IEnumerable<Person> models = this.peopleFileService
-                .Load(nameof(this.People));
+            IEnumerable<Person> models = await this.peopleFileService
+                .LoadAsync(nameof(this.People));
 
             this.People.Clear();
             this.People = new ObservableCollection<Person>(models);
@@ -77,9 +77,9 @@ public class MainViewModel : BindableBase
         }
     }
 
-    private void SaveState()
+    private async Task SaveState()
     {
-        this.peopleFileService.Save(this.People,
+        await this.peopleFileService.SaveAsync(this.People,
             nameof(this.People));
     }
 }
