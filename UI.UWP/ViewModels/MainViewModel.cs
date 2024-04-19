@@ -24,32 +24,7 @@ public class MainViewModel : BindableBase
     public static MainViewModel Instance { get; } = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
-    private PersonViewModel PlaceholderPersonViewModel
-    {
-        get
-        {
-            var person = new PersonViewModel(new Person("[Add new]", string.Empty));
-            person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
-            return person;
-        }
-    }
-
-    private PlaceholderObservableCollectionWrapper<PersonViewModel> people;
-
-
-    private MainViewModel()
-    {
-        this.people =
-            new PlaceholderObservableCollectionWrapper<PersonViewModel>(() => this.PlaceholderPersonViewModel);
-
-        // TODO: AsyncCommands
-        this.SaveStateCommand = new RelayCommand(() => this.SaveState());
-        this.LoadStateCommand = new RelayCommand(() => this.LoadState());
-
-        this.LoadStateCommand.Execute(null);
-    }
-
-    public PlaceholderObservableCollectionWrapper<PersonViewModel> People
+    public ObservableCollection<Person> People
     {
         get => this.people;
         private set => this.SetAndRaise(ref this.people, value);
@@ -57,6 +32,19 @@ public class MainViewModel : BindableBase
 
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
+    public ICommand RemovePerson { get; }
+
+    private ObservableCollection<Person> people;
+
+    private MainViewModel()
+    {
+        // TODO: AsyncCommands
+        this.SaveStateCommand = new RelayCommand(() => this.SaveState());
+        this.LoadStateCommand = new RelayCommand(() => this.LoadState());
+
+        this.LoadStateCommand.Execute(null);
+    }
+
 
     private void LoadState()
     {
@@ -64,15 +52,9 @@ public class MainViewModel : BindableBase
         {
             IEnumerable<Person> models = this.peopleFileService
                 .Load(nameof(this.People));
-            IEnumerable<PersonViewModel> viewModels = models.Select(x =>
-            {
-                var person = new PersonViewModel(x);
-                person.DeleteCommand = new RelayCommand(() => this.People.Remove(person));
-                return person;
-            });
 
             this.People.Clear();
-            this.People.AddMany(viewModels);
+            this.People = new ObservableCollection<Person>(models);
         }
         catch (Exception ex)
             when (ex is JsonException or FileNotFoundException)
@@ -83,11 +65,7 @@ public class MainViewModel : BindableBase
 
     private void SaveState()
     {
-        IEnumerable<Person> data = this.People
-            .GetReal()
-            .Select(x => x.Model);
-
-        this.peopleFileService.Save(data,
+        this.peopleFileService.Save(this.People,
             nameof(this.People));
     }
 }
