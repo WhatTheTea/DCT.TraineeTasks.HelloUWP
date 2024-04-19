@@ -21,9 +21,10 @@
 
         <DataTemplate x:Name="DeleteButtonCellTemplate">
             <Button Content="x"
-                    Command="{Binding DeleteCommand}"/>
+                    Command="{Binding RemovePersonCommand,  ElementName=ViewModel}"/>
         </DataTemplate>
     </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -36,7 +37,8 @@
                 Grid.Row="1">
             <controls:DataGrid
                 ItemsSource="{x:Bind ViewModel.People, Mode = OneWay}"
-                AutoGenerateColumns="False">
+                AutoGenerateColumns="False"
+                SelectedItem="{x:Bind ViewModel.SelectedPerson, Mode = TwoWay}">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn
                         Header="First name"
