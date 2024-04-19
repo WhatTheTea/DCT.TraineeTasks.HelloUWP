@@ -33,6 +33,7 @@ public class MainViewModel : BindableBase
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
     public ICommand RemovePersonCommand { get; }
+    public ICommand AddPlaceholderCommand { get; }
 
     public Person? SelectedPerson
     {
@@ -54,6 +55,11 @@ public class MainViewModel : BindableBase
             {
                 this.People.Remove(this.SelectedPerson);
             }
+        });
+
+        this.AddPlaceholderCommand = new RelayCommand(() =>
+        {
+            this.People.Add(new("Sample", "Text"));
         });
 
         this.LoadStateCommand.Execute(null);

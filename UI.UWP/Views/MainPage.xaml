@@ -29,7 +29,8 @@
         <StackPanel Grid.Row="0"
                     Orientation="Horizontal">
             <Button
-                Content="Add person"/>
+                Content="Add person"
+                Command="{x:Bind ViewModel.AddPlaceholderCommand}"/>
             <Button
                 Content="Delete person"
                 Command="{x:Bind ViewModel.RemovePersonCommand}"/>
