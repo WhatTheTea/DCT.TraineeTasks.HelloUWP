@@ -29,17 +29,32 @@ public class MainViewModel : BindableBase
         private set => this.SetAndRaise(ref this.people, value);
     }
 
+
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
     public ICommand RemovePerson { get; }
 
-    private ObservableCollection<Person> people;
+    public Person? SelectedPerson
+    {
+        get => this.selectedPerson;
+        set => this.SetAndRaise(ref this.selectedPerson, value);
+    }
+
+    private ObservableCollection<Person> people = [];
+    private Person? selectedPerson;
 
     private MainViewModel()
     {
         // TODO: AsyncCommands
         this.SaveStateCommand = new RelayCommand(() => this.SaveState());
         this.LoadStateCommand = new RelayCommand(() => this.LoadState());
+        this.RemovePerson = new RelayCommand(() =>
+        {
+            if (this.SelectedPerson is not null)
+            {
+                this.People.Remove(this.SelectedPerson);
+            }
+        });
 
         this.LoadStateCommand.Execute(null);
     }
