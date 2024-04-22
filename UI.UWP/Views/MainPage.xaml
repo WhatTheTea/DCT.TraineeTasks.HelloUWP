@@ -35,8 +35,20 @@
                 Content="Add person"
                 Click="AddButton_OnClick"/>
             <Button
-                Content="Delete person"
-                Command="{x:Bind ViewModel.RemovePersonCommand}"/>
+                Content="Delete person">
+                <Button.Flyout>
+                    <Flyout x:Name="FlyoutRemovePerson">
+                        <StackPanel>
+                            <TextBlock Text="Are you sure you want to remove this person?"/>
+                            <Button
+                                x:Name="FlyoutRemovePersonButton"
+                                Content="Yes"
+                                Command="{x:Bind ViewModel.RemovePersonCommand}"
+                                Click="FlyoutRemovePersonButton_OnClick"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
         </StackPanel>
         <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
                 BorderThickness="2"

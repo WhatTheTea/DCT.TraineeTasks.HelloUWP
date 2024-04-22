@@ -29,4 +29,9 @@ public sealed partial class MainPage : Page
             await this.AddDialog.ShowAsync();
         }
     }
+
+    private void FlyoutRemovePersonButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        this.FlyoutRemovePerson.Hide();
+    }
 }
