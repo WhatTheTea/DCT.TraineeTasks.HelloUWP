@@ -33,6 +33,7 @@ public class MainViewModel : BindableBase
     public ICommand SaveStateCommand { get; }
     public ICommand LoadStateCommand { get; }
     public ICommand RemovePersonCommand { get; }
+    public ICommand CreatePersonCommand { get; }
 
     public Person? SelectedPerson
     {
@@ -46,8 +47,8 @@ public class MainViewModel : BindableBase
     private MainViewModel()
     {
         // TODO: AsyncCommands
-        this.SaveStateCommand = new RelayCommand(() => this.SaveState());
-        this.LoadStateCommand = new RelayCommand(() => this.LoadState());
+        this.SaveStateCommand = new RelayCommand(this.SaveState);
+        this.LoadStateCommand = new RelayCommand(this.LoadState);
         this.RemovePersonCommand = new RelayCommand(() =>
         {
             if (this.SelectedPerson is not null)
@@ -55,6 +56,7 @@ public class MainViewModel : BindableBase
                 this.People.Remove(this.SelectedPerson);
             }
         });
+        this.CreatePersonCommand = new RelayCommand<Person>(x => this.People.Add(new Person(x)));
 
         this.LoadStateCommand.Execute(null);
     }
