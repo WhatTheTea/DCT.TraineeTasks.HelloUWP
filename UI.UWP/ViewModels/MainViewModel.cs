@@ -46,8 +46,8 @@ public class MainViewModel : BindableBase
     private MainViewModel()
     {
         // TODO: AsyncCommands
-        this.SaveStateCommand = new RelayCommand(() => this.SaveState());
-        this.LoadStateCommand = new RelayCommand(() => this.LoadState());
+        this.SaveStateCommand = new RelayCommand(this.SaveState);
+        this.LoadStateCommand = new RelayCommand(this.LoadState);
         this.RemovePersonCommand = new RelayCommand(() =>
         {
             if (this.SelectedPerson is not null)
