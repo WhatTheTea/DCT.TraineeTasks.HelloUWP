@@ -7,6 +7,8 @@
     xmlns:viewmodels="using:DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:models="using:DCT.TraineeTasks.HelloUWP.UI.UWP.Models"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
@@ -22,6 +24,33 @@
             <Setter Property="Margin" Value="5" />
         </Style>
 
+        <DataTemplate x:Key="RemoveButtonTemplate">
+            <Button
+                Content="X">
+                <Button.Flyout>
+                    <Flyout x:Name="RemovePersonFlyout">
+                        <StackPanel>
+                            <TextBlock Text="Are you sure you want to remove this person?"/>
+                            <Button
+                                x:Name="RemovePersonFlyoutButton"
+                                Content="Yes"
+                                Command="{Binding Source={StaticResource ViewModelSource}, Path=RemovePersonCommand}">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior
+                                        SourceObject="{Binding ElementName=RemovePersonFlyoutButton}"
+                                        EventName="Click">
+                                        <Core:CallMethodAction
+                                            TargetObject="{Binding ElementName=RemovePersonFlyout}"
+                                            MethodName="Hide"/>
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </Button>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </DataTemplate>
+        
     </Page.Resources>
 
     <Page.DataContext>
@@ -40,21 +69,6 @@
                 x:Name="AddButton"
                 Content="Add person"
                 Click="AddButton_OnClick"/>
-            <Button
-                Content="Delete person">
-                <Button.Flyout>
-                    <Flyout x:Name="FlyoutRemovePerson">
-                        <StackPanel>
-                            <TextBlock Text="Are you sure you want to remove this person?"/>
-                            <Button
-                                x:Name="FlyoutRemovePersonButton"
-                                Content="Yes"
-                                Command="{x:Bind ViewModel.RemovePersonCommand}"
-                                Click="FlyoutRemovePersonButton_OnClick"/>
-                        </StackPanel>
-                    </Flyout>
-                </Button.Flyout>
-            </Button>
         </StackPanel>
         <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
                 BorderThickness="2"
@@ -72,6 +86,8 @@
                     <controls:DataGridTextColumn
                         Header="Last name"
                         Binding="{Binding LastName}" />
+                    <controls:DataGridTemplateColumn
+                        CellTemplate="{StaticResource RemoveButtonTemplate}"/>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Border>
