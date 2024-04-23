@@ -18,7 +18,9 @@ public sealed partial class MainPage : Page
         Application.Current.Suspending += (_, _) => this.ViewModel.SaveStateCommand.Execute(null);
     }
 
-    public readonly MainViewModel ViewModel = MainViewModel.Instance;
+    public MainViewModel ViewModel => this.DataContext as MainViewModel
+                                      ?? throw new InvalidOperationException($"ViewModel is {this.DataContext.GetType()}. " +
+                                                                             $"{nameof(MainViewModel)} expected.");
 
     private async void AddButton_OnClick(object sender, RoutedEventArgs e)
     {

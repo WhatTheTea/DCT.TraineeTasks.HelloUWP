@@ -20,7 +20,7 @@ namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
 public class MainViewModel : BindableBase
 {
-    public static MainViewModel Instance { get; } = new();
+    //public static MainViewModel Instance { get; } = new();
     private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
 
     public ObservableCollection<Person> People
@@ -44,7 +44,7 @@ public class MainViewModel : BindableBase
     private ObservableCollection<Person> people = [];
     private Person? selectedPerson;
 
-    private MainViewModel()
+    public MainViewModel()
     {
         // TODO: AsyncCommands
         this.SaveStateCommand = new RelayCommand(this.SaveState);
