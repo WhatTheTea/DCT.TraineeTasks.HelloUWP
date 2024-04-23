@@ -84,12 +84,10 @@
                 <Interactivity:Interaction.Behaviors>
                     <Core:EventTriggerBehavior EventName="Click">
                         <Core:ChangePropertyAction
-                            d:DataContext="{d:DesignInstance models:Person}"
                             TargetObject="{Binding DataContext, ElementName=AddDialog}"
                             PropertyName="FirstName"
                             Value=""/>
                         <Core:ChangePropertyAction
-                            d:DataContext="{d:DesignInstance models:Person}"
                             TargetObject="{Binding DataContext, ElementName=AddDialog}"
                             PropertyName="LastName"
                             Value=""/>

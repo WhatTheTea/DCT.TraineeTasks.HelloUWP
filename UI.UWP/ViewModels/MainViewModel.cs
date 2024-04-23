@@ -18,7 +18,7 @@ namespace DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 public class MainViewModel : BindableBase
 {
     //public static MainViewModel Instance { get; } = new();
-    private readonly IFileService<IEnumerable<Person>> peopleFileService = new JsonFileService<IEnumerable<Person>>();
+    private readonly IFileService<ObservableCollection<Person>> peopleFileService = new JsonFileService<ObservableCollection<Person>>();
 
     public ObservableCollection<Person> People
     {
@@ -54,19 +54,8 @@ public class MainViewModel : BindableBase
 
     private void LoadState()
     {
-        try
-        {
-            IEnumerable<Person> models = this.peopleFileService
-                .Load(nameof(this.People));
-
-            this.People.Clear();
-            this.People = new ObservableCollection<Person>(models);
-        }
-        catch (Exception ex)
-            when (ex is JsonException or FileNotFoundException)
-        {
-            Trace.WriteLine(ex);
-        }
+        this.People = this.peopleFileService
+            .Load(nameof(this.People));
     }
 
     private void SaveState()
