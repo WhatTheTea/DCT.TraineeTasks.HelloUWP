@@ -3,10 +3,9 @@
 // </copyright>
 
 using System;
+using DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
-using DCT.TraineeTasks.HelloUWP.UI.UWP.ViewModels;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP.Views;
 
@@ -15,7 +14,6 @@ public sealed partial class MainPage : Page
     public MainPage()
     {
         this.InitializeComponent();
-        //Application.Current.Suspending += (_, _) => this.ViewModel.SaveStateCommand.Execute(null);
     }
 
     public MainViewModel ViewModel => this.DataContext as MainViewModel
@@ -27,5 +25,5 @@ public sealed partial class MainPage : Page
     /// </summary>
     private async void AddButton_OnClick(object sender, RoutedEventArgs e)
         => await this.AddDialog.ShowAsync();
-    
+
 }

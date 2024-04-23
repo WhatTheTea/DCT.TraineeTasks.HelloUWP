@@ -3,12 +3,12 @@
 // </copyright>
 
 using System;
+using DCT.TraineeTasks.HelloUWP.UI.UWP.Views;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using DCT.TraineeTasks.HelloUWP.UI.UWP.Views;
 
 namespace DCT.TraineeTasks.HelloUWP.UI.UWP;
 

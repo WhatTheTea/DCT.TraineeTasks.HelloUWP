@@ -9,7 +9,7 @@ namespace DCT.TraineeTasks.HelloUWP.UI.UWP.Models;
 public class Person(string firstName, string lastName) : BindableBase
 {
     public Person(Person other) : this(other.FirstName, other.LastName)
-    {}
+    { }
 
     public Person() : this(string.Empty, string.Empty)
     {
