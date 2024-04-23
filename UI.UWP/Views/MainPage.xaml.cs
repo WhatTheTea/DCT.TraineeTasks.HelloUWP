@@ -15,7 +15,7 @@ public sealed partial class MainPage : Page
     public MainPage()
     {
         this.InitializeComponent();
-        Application.Current.Suspending += (_, _) => this.ViewModel.SaveStateCommand.Execute(null);
+        //Application.Current.Suspending += (_, _) => this.ViewModel.SaveStateCommand.Execute(null);
     }
 
     public MainViewModel ViewModel => this.DataContext as MainViewModel

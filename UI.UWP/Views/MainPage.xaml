@@ -9,6 +9,7 @@
     xmlns:models="using:DCT.TraineeTasks.HelloUWP.UI.UWP.Models"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:root ="using:DCT.TraineeTasks.HelloUWP.UI.UWP"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
@@ -52,12 +53,21 @@
                 </Button.Flyout>
             </Button>
         </DataTemplate>
-        
+
     </Page.Resources>
 
     <Page.DataContext>
         <Binding Source="{StaticResource ViewModelSource}"/>
     </Page.DataContext>
+
+    <Interactivity:Interaction.Behaviors>
+        <Core:EventTriggerBehavior
+            SourceObject="{x:Bind root:App.Current}"
+            EventName="Suspending">
+            <Core:InvokeCommandAction
+                Command="{x:Bind ViewModel.SaveStateCommand}"/>
+        </Core:EventTriggerBehavior>
+    </Interactivity:Interaction.Behaviors>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -125,4 +135,4 @@
             </StackPanel>
         </ContentDialog>
     </Grid>
-</Page>
+</Page> 
