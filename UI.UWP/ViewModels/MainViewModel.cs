@@ -35,25 +35,18 @@ public class MainViewModel : BindableBase
     public ICommand RemovePersonCommand { get; }
     public ICommand CreatePersonCommand { get; }
 
-    public Person? SelectedPerson
-    {
-        get => this.selectedPerson;
-        set => this.SetAndRaise(ref this.selectedPerson, value);
-    }
-
     private ObservableCollection<Person> people = [];
-    private Person? selectedPerson;
 
     public MainViewModel()
     {
         // TODO: AsyncCommands
         this.SaveStateCommand = new RelayCommand(this.SaveState);
         this.LoadStateCommand = new RelayCommand(this.LoadState);
-        this.RemovePersonCommand = new RelayCommand(() =>
+        this.RemovePersonCommand = new RelayCommand<Person>(p =>
         {
-            if (this.SelectedPerson is not null)
+            if (p is not null)
             {
-                this.People.Remove(this.SelectedPerson);
+                this.People.Remove(p);
             }
         });
         this.CreatePersonCommand = new RelayCommand<Person>(x => this.People.Add(new Person(x)));

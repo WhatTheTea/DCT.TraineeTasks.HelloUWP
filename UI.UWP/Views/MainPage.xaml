@@ -24,7 +24,8 @@
             <Setter Property="Margin" Value="5" />
         </Style>
 
-        <DataTemplate x:Key="RemoveButtonTemplate">
+        <DataTemplate x:Key="RemoveButtonTemplate"
+                      x:DataType="models:Person">
             <Button
                 Content="X">
                 <Button.Flyout>
@@ -34,7 +35,8 @@
                             <Button
                                 x:Name="RemovePersonFlyoutButton"
                                 Content="Yes"
-                                Command="{Binding Source={StaticResource ViewModelSource}, Path=RemovePersonCommand}">
+                                Command="{Binding Source={StaticResource ViewModelSource}, Path=RemovePersonCommand}"
+                                CommandParameter="{Binding}">
                                 <Interactivity:Interaction.Behaviors>
                                     <Core:EventTriggerBehavior
                                         SourceObject="{Binding ElementName=RemovePersonFlyoutButton}"
@@ -77,8 +79,7 @@
                 Grid.Row="1">
             <controls:DataGrid
                 ItemsSource="{x:Bind ViewModel.People, Mode = OneWay}"
-                AutoGenerateColumns="False"
-                SelectedItem="{x:Bind ViewModel.SelectedPerson, Mode = TwoWay}">
+                AutoGenerateColumns="False">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn
                         Header="First name"
