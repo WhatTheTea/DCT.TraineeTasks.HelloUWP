@@ -21,14 +21,11 @@ public sealed partial class MainPage : Page
     public MainViewModel ViewModel => this.DataContext as MainViewModel
                                       ?? throw new InvalidOperationException($"ViewModel is {this.DataContext.GetType()}. " +
                                                                              $"{nameof(MainViewModel)} expected.");
-
+    /// <summary>
+    /// :c
+    /// https://github.com/microsoft/XamlBehaviors/issues/112
+    /// </summary>
     private async void AddButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        if (this.AddDialog.DataContext is Person person)
-        {
-            person.FirstName = string.Empty;
-            person.LastName = string.Empty;
-            await this.AddDialog.ShowAsync();
-        }
-    }
+        => await this.AddDialog.ShowAsync();
+    
 }

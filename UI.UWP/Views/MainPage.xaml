@@ -69,8 +69,23 @@
                     Orientation="Horizontal">
             <Button
                 x:Name="AddButton"
-                Content="Add person"
-                Click="AddButton_OnClick"/>
+                Click="AddButton_OnClick"
+                Content="Add person">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:EventTriggerBehavior EventName="Click">
+                        <Core:ChangePropertyAction
+                            d:DataContext="{d:DesignInstance models:Person}"
+                            TargetObject="{Binding DataContext, ElementName=AddDialog}"
+                            PropertyName="FirstName"
+                            Value=""/>
+                        <Core:ChangePropertyAction
+                            d:DataContext="{d:DesignInstance models:Person}"
+                            TargetObject="{Binding DataContext, ElementName=AddDialog}"
+                            PropertyName="LastName"
+                            Value=""/>
+                    </Core:EventTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+            </Button>
         </StackPanel>
         <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}"
                 BorderThickness="2"
